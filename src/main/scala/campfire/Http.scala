@@ -19,7 +19,7 @@ object HTTP {
   client.getParams.setAuthenticationPreemptive(true)
 
   def get(endPoint:String): JValue = {
-    val method = new GetMethod("https://csinteractive.campfirenow.com"+endPoint+".json")
+    val method = new GetMethod("https://subdomain.campfirenow.com"+endPoint+".json")
     
     try {
       client.executeMethod(method)
