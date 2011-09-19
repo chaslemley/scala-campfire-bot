@@ -13,13 +13,13 @@ import net.liftweb.json._
 
 object HTTP {
   val client = new HttpClient
-  val credentials = new UsernamePasswordCredentials("API_TOKEN:X")
+  val credentials = new UsernamePasswordCredentials("75c4d4d131ec20b529ced4ee6d816c952c55e651:X")
   
   client.getState.setCredentials(AuthScope.ANY, credentials)
   client.getParams.setAuthenticationPreemptive(true)
 
   def get(endPoint:String): JValue = {
-    val method = new GetMethod("https://subdomain.campfirenow.com"+endPoint+".json")
+    val method = new GetMethod("https://csinteractive.campfirenow.com"+endPoint+".json")
     
     try {
       client.executeMethod(method)
