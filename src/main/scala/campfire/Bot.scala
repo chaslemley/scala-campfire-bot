@@ -1,12 +1,18 @@
 package campfire
 
-class Bot extends RemoteObject {
+import net.liftweb.json.JsonDSL._
+
+class Bot {
   def speak(room:Room, message:String) {
-    println(message)
-    postData("/room/"+room.id+"/speak")
+    val data = 
+      ("message" -> 
+        ("type" -> "TextMessage") ~ 
+        ("body" -> message))
+
+    HTTP.post("/room/"+room.id+"/speak", data)
   }
 }
 
-object Bot extends RemoteObject {
-  def apply(): Bot = (fetchData("/users/me") \ "user").extract[Bot]
+object Bot extends Item {
+  def apply(): Bot = (HTTP.get("/users/me") \ "user").extract[Bot]
 }
