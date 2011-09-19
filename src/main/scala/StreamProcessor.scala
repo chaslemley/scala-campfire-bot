@@ -9,7 +9,7 @@ object StreamProcessor {
 
     while (line != null) {
       println(line)
-      // dispatch to any registered processors
+      // dispatch to any registered processors (maybe make processor an actor and send them a message ;))
       line = reader.readLine()
     }
 
