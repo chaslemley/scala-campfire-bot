@@ -13,8 +13,13 @@ class StreamProcessor {
 
     while (line != null) {
       var message = Message(json.parse(line))
+
+      if (message.body startsWith "pribot") {
+        // dispatch to any registered processors (maybe make processor an actor and send them a message ;))
+        var room = Room(message.room_id)
+        room.speak(message.body)
+      }
       println(message)
-      // dispatch to any registered processors (maybe make processor an actor and send them a message ;))
       line = reader.readLine()
     }
 

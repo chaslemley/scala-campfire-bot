@@ -3,9 +3,8 @@ package campfire
 object CampfireBot {
   def main(args:Array[String]) {
     val room = Room(437847)
-
     room.join
-    room.speak("pribot jumping in on the scene")
+    room speak "pribot jumping in on the scene"
 
     val processor = new StreamProcessor
     // register handlers
