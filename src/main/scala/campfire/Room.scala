@@ -12,6 +12,7 @@ case class Room(id:Int, name:String, topic:String, users:List[User]) {
     HTTP.post("/room/"+id+"/speak", data)
   }
 
+  def join = HTTP.post("/room/"+id+"/join", null)
   def listen(processor:StreamProcessor) = HTTP.stream("/room/"+id+"/live", processor)
 }
 
