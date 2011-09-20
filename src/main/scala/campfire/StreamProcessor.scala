@@ -17,7 +17,8 @@ class StreamProcessor {
       if (message.body startsWith "pribot") {
         // dispatch to any registered processors (maybe make processor an actor and send them a message ;))
         var room = Room(message.room_id)
-        room.speak(message.body)
+        var user = User(message.user_id)
+        room.speak("I do not understand that command "+user.first_name+"...")
       }
       println(message)
       line = reader.readLine()
