@@ -13,13 +13,13 @@ import net.liftweb.json._
 
 object HTTP {
   val client = new HttpClient
-  val credentials = new UsernamePasswordCredentials("75c4d4d131ec20b529ced4ee6d816c952c55e651:X")
+  val credentials = new UsernamePasswordCredentials("API_TOKEN:X")
   
   client.getState.setCredentials(AuthScope.ANY, credentials)
   client.getParams.setAuthenticationPreemptive(true)
 
   def get(endPoint:String): JValue = {
-    val method = new GetMethod("https://csinteractive.campfirenow.com"+endPoint+".json")
+    val method = new GetMethod("https://subdomain.campfirenow.com"+endPoint+".json")
     
     try {
       client.executeMethod(method)
@@ -30,11 +30,22 @@ object HTTP {
   }
 
   def post(endPoint: String, data: JObject) = {
-    val method = new PostMethod("https://csinteractive.campfirenow.com"+endPoint+".json")
+    val method = new PostMethod("https://subdomain.campfirenow.com"+endPoint+".json")
     method.setRequestEntity(new StringRequestEntity(compact(render(data)), "application/json", null))
     
     try {
       client.executeMethod(method)
+    } finally {
+      method.releaseConnection()
+    }
+  }
+
+  def stream(endPoint: String, processor: StreamProcessor) = {
+    val method = new GetMethod("http://streaming.campfirenow.com"+endPoint+".json")
+    
+    try {
+      client.executeMethod(method)
+      processor.process(method.getResponseBodyAsStream)
     } finally {
       method.releaseConnection()
     }
