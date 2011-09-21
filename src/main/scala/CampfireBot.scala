@@ -1,6 +1,6 @@
 package campfire
 
-import handlers.EchoBot
+import handlers._
 
 object CampfireBot {
   def main(args:Array[String]) {
@@ -10,9 +10,8 @@ object CampfireBot {
 
     val processor = new StreamProcessor
     // register handlers
-    val echo_bot = new EchoBot
-    processor.addHandler(echo_bot)
-
+    processor.addHandler(new EchoBot)
+    processor.addHandler(new FuckYeahBot)
     room.listen(processor)
   }
 }
