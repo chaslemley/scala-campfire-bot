@@ -7,6 +7,18 @@ import handlers._
 
 import net.liftweb.json
 
+case class BackOff(var origBackOffTime: Long, capBackOffAt: Long) {
+  var backOffTime = origBackOffTime
+
+  def backOff = {
+    Thread.sleep(backOffTime)
+    backOffTime *= 2
+    if(backOffTime > capBackOffAt) backOffTime = capBackOffAt
+  }
+
+  def reset() = { backOffTime = origBackOffTime }
+}
+
 class StreamProcessor {
   private var handlers = List[Handler]()
 
@@ -17,20 +29,11 @@ class StreamProcessor {
     while(true) {
       var message = Message(json.parse(line))
       println(message)
-
-      if (message.body != null && message.body.startsWith("pribot")) {
-        // dispatch to any registered processors (maybe make processor an actor and send them a message ;))
-        notifyHandlers(message)
-      }
+      if (message.body != null && message.body.startsWith("pribot")) notifyHandlers(message)
       line = reader.readLine().trim
     }
-
-    is.close
   }
 
-  def addHandler(handler:Handler) = {
-    handlers ::= handler
-    handler.start
-  }
+  def addHandler(handler:Handler) = handlers ::= handler
   def notifyHandlers(message:Message) = handlers foreach (_ ! message)
 }
