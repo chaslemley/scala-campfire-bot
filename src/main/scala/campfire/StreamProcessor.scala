@@ -16,11 +16,10 @@ class StreamProcessor {
 
     while (line != null) {
       var message = Message(json.parse(line))
-      notifyHandlers(message)
-      // if (message.body startsWith "pribot") {
-      //   // dispatch to any registered processors (maybe make processor an actor and send them a message ;))
-        
-      // }
+      if (message.body startsWith "pribot") {
+        // dispatch to any registered processors (maybe make processor an actor and send them a message ;))
+        notifyHandlers(message)
+      }
       println(message)
       line = reader.readLine()
     }
