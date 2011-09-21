@@ -44,18 +44,24 @@ object HTTP {
     }
   }
 
-  def stream(endPoint: String, processor: StreamProcessor) = {
-    val client = new HttpClient
-    val method = new GetMethod("http://streaming.campfirenow.com"+endPoint+".json")
-
-    client.getState.setCredentials(AuthScope.ANY, credentials)
-    client.getParams.setAuthenticationPreemptive(true)
-
+  val backOff = BackOff(2000, 128000)
+  final def stream(endPoint: String, processor: StreamProcessor): Unit = {
     try {
-      client.executeMethod(method)
-      processor.process(method.getResponseBodyAsStream)
-    } finally {
-      method.releaseConnection()
+      val client = new HttpClient
+      val method = new GetMethod("http://streaming.campfirenow.com"+endPoint+".json")
+
+      client.getState.setCredentials(AuthScope.ANY, credentials)
+      client.getParams.setAuthenticationPreemptive(true)
+
+      try {
+        client.executeMethod(method)
+        backOff.reset
+        processor.process(method.getResponseBodyAsStream)
+      } finally {
+        method.releaseConnection()
+      }
+      backOff.backOff
+      stream(endPoint, processor)
     }
   }
 }
