@@ -3,6 +3,15 @@ package campfire
 import net.liftweb.json.JsonDSL._
 
 case class Room(id:Int, name:String, topic:String, users:List[User]) {
+  def paste(message:String) {
+    val data = 
+      ("message" -> 
+        ("type" -> "PasteMessage") ~ 
+        ("body" -> message))
+
+    Campfire.post("https://chaschats.campfirenow.com/room/"+id+"/speak.json", data)
+  }
+  
   def speak(message:String) {
     val data = 
       ("message" -> 
