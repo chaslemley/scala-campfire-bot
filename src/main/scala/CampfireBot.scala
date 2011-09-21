@@ -11,7 +11,8 @@ object CampfireBot {
     val processor = new StreamProcessor
     // register handlers
     processor.addHandler(new EchoBot)
-    processor.addHandler(new FuckYeahBot)
+    processor.addHandler(new ImageSearchBot)
+
     room.listen(processor)
   }
 }
