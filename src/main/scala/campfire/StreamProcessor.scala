@@ -7,18 +7,6 @@ import handlers._
 
 import net.liftweb.json
 
-case class BackOff(var origBackOffTime: Long, capBackOffAt: Long) {
-  var backOffTime = origBackOffTime
-
-  def backOff = {
-    Thread.sleep(backOffTime)
-    backOffTime *= 2
-    if(backOffTime > capBackOffAt) backOffTime = capBackOffAt
-  }
-
-  def reset() = { backOffTime = origBackOffTime }
-}
-
 class StreamProcessor {
   private var handlers = List[Handler]()
 

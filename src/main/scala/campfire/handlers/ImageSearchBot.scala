@@ -4,8 +4,9 @@ import campfire._
 import java.net.URLEncoder
 
 class ImageSearchBot extends Handler {
-  implicit val formats = net.liftweb.json.DefaultFormats
   val command:String = "pribot image me"
+  val description:String = "Displays a random image from Google Image Search ex. pribot image me unicorns"
+  implicit val formats = net.liftweb.json.DefaultFormats
   val r = new scala.util.Random
 
   def handleMessage(m:Message):Unit = {
@@ -15,7 +16,6 @@ class ImageSearchBot extends Handler {
       var imageURL = ((json \ "responseData" \ "results")(r.nextInt(3)) \ "url").extract[String]
       var room = new Room(m.room_id.toInt)
       room speak imageURL
-      
     }
   }
 }

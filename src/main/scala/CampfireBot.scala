@@ -8,11 +8,15 @@ object CampfireBot {
     room.join
     room speak "pribot jumping in on the scene"
 
-    val processor = new StreamProcessor
-    // register handlers
-    processor.addHandler(new EchoBot)
-    processor.addHandler(new ImageSearchBot)
+    val f = new MoviesBot
+    val m = new Message(0, "pribot movie search Jack", "", "437847", "")
+    f ! m
 
-    room.listen(processor)
+    // val processor = new StreamProcessor
+    // // register handlers
+    // processor.addHandler(new EchoBot)
+    // processor.addHandler(new ImageSearchBot)
+
+    // room.listen(processor)
   }
 }
