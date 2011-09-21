@@ -12,16 +12,17 @@ class StreamProcessor {
 
   def process(is: InputStream) {
     val reader: BufferedReader = new BufferedReader(new InputStreamReader(is, "UTF-8"))
-    var line = reader.readLine()
+    var line = reader.readLine().trim
 
-    while (line != null) {
+    while(true) {
       var message = Message(json.parse(line))
-      if (message.body startsWith "pribot") {
+      println(message)
+
+      if (message.body != null && message.body.startsWith("pribot")) {
         // dispatch to any registered processors (maybe make processor an actor and send them a message ;))
         notifyHandlers(message)
       }
-      println(message)
-      line = reader.readLine()
+      line = reader.readLine().trim
     }
 
     is.close
