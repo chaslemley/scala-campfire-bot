@@ -17,11 +17,14 @@ class StreamProcessor {
     while(true) {
       var message = Message(json.parse(line))
       println(message)
-      if (message.body != null && message.body.startsWith("pribot")) notifyHandlers(message)
+      if (message.body != null) notifyHandlers(message)
       line = reader.readLine().trim
     }
   }
 
-  def addHandler(handler:Handler) = handlers ::= handler
+  def addHandler(handler:Handler) = {
+    handlers ::= handler
+    handler start
+  }
   def notifyHandlers(message:Message) = handlers foreach (_ ! message)
 }

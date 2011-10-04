@@ -5,7 +5,6 @@ import java.net.URLEncoder
 
 class ImageSearchBot extends Handler {
   val command:String = "pribot image me"
-  val description:String = "Displays a random image from Google Image Search ex. pribot image me unicorns"
   implicit val formats = net.liftweb.json.DefaultFormats
   val r = new scala.util.Random
 

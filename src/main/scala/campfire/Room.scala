@@ -25,6 +25,7 @@ case class Room(id:Int, name:String, topic:String, users:List[User]) {
   def leave = Campfire.post("https://chaschats.campfirenow.com/room/"+id+"/leave.json", null)
   def listen(processor:StreamProcessor) = Campfire.stream("http://streaming.campfirenow.com/room/"+id+"/live.json", processor)
   def this(id:Int) = this(id, "", "", null)
+  def this(id:String) = this(id.toInt, "", "", null)
 }
 
 object Room extends Item {
